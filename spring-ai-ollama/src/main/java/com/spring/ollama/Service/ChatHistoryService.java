@@ -35,25 +35,21 @@ public class ChatHistoryService {
         List<ChatSession> list = loadAll();
 
         String title = firstMsg.length() > 20 ? firstMsg.substring(0, 20) + "..." : firstMsg;
-
         ChatSession session = new ChatSession(UUID.randomUUID().toString(), title);
+
         session.getMessages().add("You: " + firstMsg);
-
         list.add(session);
-        saveAll(list);
 
+        saveAll(list);
         return session;
     }
 
     public void addToChat(String id, String msg) {
         List<ChatSession> list = loadAll();
 
-        for (ChatSession chat : list) {
-            if (chat.getId().equals(id)) {
-                chat.getMessages().add(msg);
-                break;
-            }
-        }
+        for (ChatSession c : list)
+            if (c.getId().equals(id))
+                c.getMessages().add(msg);
 
         saveAll(list);
     }
