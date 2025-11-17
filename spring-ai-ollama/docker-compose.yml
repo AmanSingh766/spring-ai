@@ -1,0 +1,23 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: always
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-models:/root/.ollama
+
+  spring-ai:
+    build: .
+    container_name: spring-ai-app
+    restart: always
+    depends_on:
+      - ollama
+    ports:
+      - "8082:8081"
+    environment:
+      SPRING_AI_OLLAMA_BASEURL: http://ollama:11434
+
+volumes:
+  ollama-models:
